@@ -32,3 +32,18 @@ Revisión:: 2022-04-26
 | #Pendiente |                                                        | No debe existir en su solución ningún “single point of failure”                                                                                                                                                                                                                                                   |
 | #Pendiente |                                                        | toda la lógica se diseñe con microservicios                                                                                                                                                                                                                                                                       |
 | #Pendiente |                                                        |                                                                                                                                                                                                                                                                                                                   |
+
+
+
+## Lista de microservicios
+
+| Estado     | Descripción                                   |
+| ---------- | --------------------------------------------- |
+| #Pendiente | Inscripción de empresas de logísticas         |
+| #Pendiente | Inscripción de espacios disponibles           |
+| #Pendiente | Solicitud de espacios disponibles             |
+| #Pendiente | Estado de envío                               |
+| #Pendiente | Login                                         |
+| #Pendiente | Reporte de fallas                             |
+| #Pendiente | Reporte en puerto ( cuando llega a un puerto) |
+| #Pendiente | lo que necesite la arquitectura               | 
