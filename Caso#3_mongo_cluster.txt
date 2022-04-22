@@ -1,0 +1,114 @@
+
+
+// Creamos servidores de sharding
+PC Gil:
+docker run -d  -p 27019:27017 -v vol_costarica:/data/db --name costarica mongo mongod --port 27017 --bind_ip_all --replSet rep_pais_costarica --dbpath /data/db 
+docker run -d  -p 27020:27017 -v vol_movimientos_costarica:/data/db --name mov_costarica mongo mongod --port 27017 --bind_ip_all --replSet rep_mov_costarica --dbpath /data/db 
+
+docker run -d  -p 27021:27017 -v vol_mexico:/data/db --name mexico_rep mongo mongod --port 27017 --bind_ip_all --replSet rep_pais_mexico --dbpath /data/db 
+docker run -d  -p 27022:27017 -v vol_movimientos_maxico:/data/db --name mov_mexico_rep mongo mongod --port 27017 --bind_ip_all --replSet rep_mov_mexico --dbpath /data/db
+
+PC Esteban:
+docker run -d  -p 27019:27017 -v vol_panama:/data/db --name panama mongo mongod --port 27017 --bind_ip_all --replSet rep_pais_panama --dbpath /data/db 
+docker run -d  -p 27020:27017 -v vol_movimientos_panama:/data/db --name mov_panama mongo mongod --port 27017 --bind_ip_all --replSet rep_mov_panama --dbpath /data/db 
+
+docker run -d  -p 27021:27017 -v vol_costarica:/data/db --name costarica_rep mongo mongod --port 27017 --bind_ip_all --replSet rep_pais_costarica --dbpath /data/db 
+docker run -d  -p 27022:27017 -v vol_movimientos_costarica:/data/db --name mov_costarica_rep mongo mongod --port 27017 --bind_ip_all --replSet rep_mov_costarica --dbpath /data/db 
+
+PC David S:
+docker run -d  -p 27019:27017 -v vol_colombia:/data/db --name colombia mongo mongod --port 27017 --bind_ip_all --replSet rep_pais_colombia --dbpath /data/db 
+docker run -d  -p 27020:27017 -v vol_movimientos_colombia:/data/db --name mov_colombia mongo mongod --port 27017 --bind_ip_all --replSet rep_mov_colombia --dbpath /data/db 
+
+docker run -d  -p 27021:27017 -v vol_panama:/data/db --name panama_rep mongo mongod --port 27017 --bind_ip_all --replSet rep_pais_panama --dbpath /data/db 
+docker run -d  -p 27022:27017 -v vol_movimientos_panama:/data/db --name mov_panama_rep mongo mongod --port 27017 --bind_ip_all --replSet rep_mov_panama --dbpath /data/db 
+
+PC David:
+docker run -d  -p 27019:27017 -v vol_mexico:/data/db --name mexico mongo mongod --port 27017 --bind_ip_all --replSet rep_pais_mexico --dbpath /data/db 
+docker run -d  -p 27020:27017 -v vol_movimientos_maxico:/data/db --name mov_mexico mongo mongod --port 27017 --bind_ip_all --replSet rep_mov_mexico --dbpath /data/db 
+
+docker run -d  -p 27021:27017 -v vol_colombia:/data/db --name colombia_rep mongo mongod --port 27017 --bind_ip_all --replSet rep_pais_colombia --dbpath /data/db 
+docker run -d  -p 27022:27017 -v vol_movimientos_colombia:/data/db --name mov_colombia_rep mongo mongod --port 27017 --bind_ip_all --replSet rep_mov_colombia --dbpath /data/db 
+
+
+//Iniciamos las replicas de los paises/puertos **********************************************************************
+Gil:
+rs.initiate({
+    _id: "rep_pais_costarica", 
+    members: [
+      { _id : 0, host : "25.77.46.90:27019" }, 
+      { _id : 1, host : "25.5.181.178:27021" } 
+    ]
+  }
+);
+
+Esteban:
+rs.initiate({
+    _id: "rep_pais_panama", 
+    members: [
+      { _id : 0, host : "25.5.181.178:27019" }, 
+      { _id : 1, host : "25.77.2.238:27021" }
+    ]
+  }
+);
+
+David S:
+rs.initiate({
+    _id: "rep_pais_colombia", 
+    members: [
+      { _id : 0, host : "25.77.2.238:27019" }, //Colombia IP: DavidS Port: 27019
+      { _id : 1, host : "25.77.226.95:27021" } //Mexico IP: David Port: 27019
+    ]
+  }
+);
+
+David:
+rs.initiate({
+    _id: "rep_pais_mexico", 
+    members: [
+      { _id : 0, host : "25.77.226.95:27019" },
+      { _id : 1, host : "25.77.46.90:27021" }
+    ]
+  }
+);
+
+//Iniciamos las replicas de los paises/movimientos ***********************************************************
+Gil:
+rs.initiate({
+    _id: "rep_mov_costarica", 
+    members: [
+      { _id : 0, host : "25.77.46.90:27020" }, 
+      { _id : 1, host : "25.5.181.178:27022" } 
+    ]
+  }
+);
+
+Esteban:
+rs.initiate({
+    _id: "rep_mov_panama", 
+    members: [
+      { _id : 0, host : "25.5.181.178:27020" }, 
+      { _id : 1, host : "25.77.2.238:27022" }
+    ]
+  }
+);
+
+David S:
+rs.initiate({
+    _id: "rep_mov_colombia", 
+    members: [
+      { _id : 0, host : "25.77.2.238:27020" }, //Colombia IP: DavidS Port: 27019
+      { _id : 1, host : "25.77.226.95:27022" } //Mexico IP: David Port: 27019
+    ]
+  }
+);
+
+David:
+rs.initiate({
+    _id: "rep_mov_mexico", 
+    members: [
+      { _id : 0, host : "25.77.226.95:27020" },
+      { _id : 1, host : "25.77.46.90:27022" }
+    ]
+  }
+);
+
