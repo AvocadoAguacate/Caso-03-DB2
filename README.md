@@ -1,7 +1,7 @@
 Fecha:: 2022-04-21T23:55
 Estado:: #Pendiente
 Enunciado::[Caso 03](https://estudianteccr-my.sharepoint.com/:b:/g/personal/estebanguzra_estudiantec_cr/EWxxx0KgvIBCmGLXLbKijmsBms_SsSZJAOFWxzmWlRZfIA?e=Q3TKWq)
-Revisión:: 2022-04-26
+Revisión:: 2022-04-30
 
 ---
 # Caso03
@@ -39,11 +39,8 @@ Revisión:: 2022-04-26
 
 | Estado     | Descripción                                   |
 | ---------- | --------------------------------------------- |
-| #Pendiente | Inscripción de empresas de logísticas         |
-| #Pendiente | Inscripción de espacios disponibles           |
-| #Pendiente | Solicitud de espacios disponibles             |
-| #Pendiente | Estado de envío                               |
-| #Pendiente | Login                                         |
-| #Pendiente | Reporte de fallas                             |
-| #Pendiente | Reporte en puerto ( cuando llega a un puerto) |
-| #Pendiente | lo que necesite la arquitectura               | 
+| Gilbert  | Cargar datos en cache                         |
+| Mauricio | Solicitud de espacios disponibles             |
+| Esteban | Reservar espacio                               |
+| David E | Estado de envío                                |
+| David S | Reporte en puerto ( cuando llega a un puerto)  |
