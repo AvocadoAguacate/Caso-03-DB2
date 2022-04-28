@@ -40,11 +40,9 @@ const libroEndpoint = (libro) => constants.endpoint(libro);
     } else {
       console.log("El libro no existe");
       const apiResponse = await axios.get(libroEndpoint('1'));
-      const libro = JSON.stringify(apiResponse.data);
-      await client.SETEX('1', 10, libro );
-      console.log(JSON.stringify(apiResponse.data));
+      await client.SETEX('1', 10, JSON.stringify(apiResponse.data ));
     }
-  console.log(value);
+  console.log(JSON.parse(value));
   process.exit(0);
 })();
 
