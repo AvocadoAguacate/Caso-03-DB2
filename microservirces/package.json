@@ -23,9 +23,14 @@
     "moleculer-repl": "^0.6.6"
   },
   "dependencies": {
+    "ioredis": "^4.28.5",
+    "moleculer": "^0.14.16",
+    "moleculer-db": "^0.8.17",
+    "moleculer-db-adapter-mongoose": "^0.8.12",
     "moleculer-web": "^0.10.2",
+    "mongoose": "^5.13.14",
     "nats": "^2.2.0",
-    "moleculer": "^0.14.16"
+    "redis": "^4.0.6"
   },
   "engines": {
     "node": ">= 12.x.x"
