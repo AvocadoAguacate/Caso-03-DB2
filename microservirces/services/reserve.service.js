@@ -58,6 +58,8 @@ module.exports = {
 					id_solicitud: { type: Number },
 					id_contenedor: { type: Number },
 					pais_llegada: { type: String },
+					id_cliente: { type: Number },
+					peso: { type: Number },
 					activo: { type: Boolean}
 				},
 				{ versionKey: false }
@@ -78,11 +80,11 @@ module.exports = {
 			rest: "/reserve",
 			async handler(ctx) {
 				//set request info
-				let request = {
-					client_id: ctx.params.client_id,
-					container_id: ctx.params.container_id,
+				const request = {
+					id_client: ctx.params.id_client,
+					id_contenedor: ctx.params.id_contenedor,
 					weight: ctx.params.weight,
-					dimensions: [ctx.params.x, ctx.params.y, ctx.params.z],
+					country: ctx.params.country
 				};
 				//check request info
 				if (!this.requestChecker(request)) {
@@ -90,21 +92,23 @@ module.exports = {
 				}
 				//buscar el contenedor *****
 				const Cont = mongoose.models.contenedores;
-				const resp = await Cont.find({"id_contenedor":ctx.params.container_id});
+				const resp = await Cont.find({"id_contenedor":ctx.params.container_id, "activo": true});
+				if(resultado == null){
+					return "Contenedor ocupado";
+				}
+				const json_resp = JSON.parse(resp);
+				const key = json_resp.pais_A + json_resp.pais_B; //key de redis que tengo que actualizar o borrar
 				//set como ocupado **
 				resp.activo = false;
 				await resp.save();
 				//set el redis *****
 				// guardar en mov
-				const json_resp = JSON.parse(resp);
-				const Mexico = "mongodb://localhost:MexicoMov"
-        const CostaRica = "mongodb://localhost:CostaRicaMov"
-        const Panama = "mongodb://localhost:PanamaMov"
-        const Colombia = "mongodb://localhost:ColombiaMov"
 				const doc = new mongoose.models.solicitudes({
 					id_solicitud: json_resp.id_contenedor,
 					id_contenedor: json_resp.id_contenedor,
 					pais_llegada: json_resp.pais_B,
+					peso: request.weight,
+					id_cliente: request.id_client,
 					activo: true
 				});
 				//debería cambiar la base en la que guardo ****
@@ -129,19 +133,13 @@ module.exports = {
 			return this.requestNullChecker(request);
 		},
 		requestNullChecker(request) {
-			let client_check = request.client_id != undefined;
-			let container_check = request.container_id != undefined;
+			let client_check = request.id_client != undefined;
+			let container_check = request.id_contenedor != undefined;
 			let weight_check = request.weight != undefined;
-			let x_check = request.dimensions[0] != undefined;
-			let y_check = request.dimensions[1] != undefined;
-			let z_check = request.dimensions[2] != undefined;
 			return (
 				client_check &&
 				container_check &&
-				weight_check &&
-				x_check &&
-				y_check &&
-				z_check
+				weight_check 
 			);
 		},
 	},
