@@ -1,0 +1,18 @@
+//pruebas
+docker run -d  -p 27050:27017 -v vol_movimientos_pr01:/data/db --name mov_pr01 mongo
+docker run -d  -p 27051:27017 -v vol_movimientos_pr02:/data/db --name mov_pr02 mongo
+
+use movimiento
+db.solicitud.insertMany(
+[{"id_solicitud" : 1, "id_contenedor": 1, "paisllegada": "Costa Rica", "activo": true},
+{"id_solicitud" : 2, "id_contenedor": 13, "paisllegada": "Costa Rica", "activo": false},
+{"id_solicitud" : 3, "id_contenedor": 41, "paisllegada": "Costa Rica", "activo": true},
+{"id_solicitud" : 4, "id_contenedor": 17, "paisllegada": "Panama", "activo": true}]
+);
+
+db.solicitud.insertMany(
+[{"id_solicitud" : 5, "id_contenedor": 21, "paisllegada": "Colombia", "activo": false},
+{"id_solicitud" : 6, "id_contenedor": 23, "paisllegada": "Costa Rica", "activo": false},
+{"id_solicitud" : 7, "id_contenedor": 51, "paisllegada": "Costa Rica", "activo": true},
+{"id_solicitud" : 8, "id_contenedor": 77, "paisllegada": "Panama", "activo": true}]
+);
