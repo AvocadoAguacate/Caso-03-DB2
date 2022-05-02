@@ -92,10 +92,10 @@ module.exports = {
 				await resp.save();
 				//set el redis *****
 				// guardar en mov
-				var bds_mov=["25.77.46.90:27020,25.5.181.178:27022/movimiento?replicaSet=rep_mov_costarica",
-				"25.5.181.178:27020,25.77.2.238:27022/movimiento?replicaSet=rep_mov_panama",
-				"25.77.2.238:27020,25.77.226.95:27022/movimiento?replicaSet=rep_mov_colombia",
-				"25.77.226.95:27020,25.77.46.90:27022/movimiento?replicaSet=rep_mov_mexico"];
+				var bds_mov=["25.6.50.193:27020,25.5.181.178:27022/movimientos?replicaSet=rep_mov_costarica",
+				"25.5.181.178:27020,25.77.2.238:27022/movimientos?replicaSet=rep_mov_panama",
+				"25.77.2.238:27020,25.77.226.95:27022/movimientos?replicaSet=rep_mov_colombia",
+				"25.77.226.95:27020,25.6.50.193:27022/movimientos?replicaSet=rep_mov_mexico"];
 				var selectedMov;
 				if (request.country === "Costa Rica"){
 					selectedMov = bds_mov[0];
