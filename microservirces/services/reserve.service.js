@@ -107,7 +107,7 @@ module.exports = {
 					selectedMov = bds_mov[3];
 				}
 				var est2 = mongoose.createConnection("mongodb://" + selectedMov);
-				const model02 = est2.models.solicitudes || est2.model("solicitudes", mongoose.Schema({
+				const model02 = est2.models.movimientos || est2.model("movimientos", mongoose.Schema({
 					id_solicitud: { type: Number },
 					id_contenedor: { type: Number },
 					pais_llegada: { type: String },
@@ -115,7 +115,7 @@ module.exports = {
 					peso: { type: Number },
 					activo: { type: Boolean}
 				})); 
-				const doc = new mongoose.models.solicitudes({
+				const doc = new mongoose.models.movimientos({
 					id_solicitud: json_resp.id_contenedor,
 					id_contenedor: json_resp.id_contenedor,
 					pais_llegada: json_resp.pais_B,
