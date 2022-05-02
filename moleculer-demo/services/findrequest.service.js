@@ -48,11 +48,12 @@ module.exports = {
                 const data = ctx.params.id_solicitud;
                 var resp;
                 
-                var conecciones = ['25.77.46.90:27020/mov_costarica',
-                    '25.5.181.178:27020/mov_panama',
-                    '25.77.2.238:27020/mov_colombia',
-                    '25.77.226.95:27020/mov_mexico',
+                var conecciones = ['25.77.46.90:27020/mov_costarica?rep_mov_costarica',
+                    '25.5.181.178:27020/mov_panama?rep_mov_panama',
+                    '25.77.2.238:27020/mov_colombia?rep_mov_colombia',
+                    '25.77.226.95:27020/mov_mexico?rep_mov_mexico',
                 ];
+                var pais = ["Costa Rica", "Panama", "Colombia", "Mexico"];
                 const contdb = conecciones.length;
 
                 for( let i = 0; i < contdb; i++) {
@@ -65,7 +66,7 @@ module.exports = {
                     }));
                     var resp = await myschema.find({"id_solicitud" : data, "activo": true});
                     if(resp[0].id_solicitud == data && resp[0].activo ){
-                        return resp;
+                        return "La informacion se encontro en: "+ pais[i]+"\n la informacion es:"+resp;
                     }
                     connection.close();
                 };
