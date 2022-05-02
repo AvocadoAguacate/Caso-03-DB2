@@ -61,11 +61,13 @@ module.exports = {
                     const myschema = connection.model.solicitud || connection.model("solicitud", mongoose.Schema({
                         id_solicitud: { type: Number },
                         id_contenedor: { type: Number },
-                        paisllegada: { type: String },
+                        pais_llegada: { type: String },
+                        id_cliente: { type: Number },
+					    peso: { type: Number },
                         activo: { type: Boolean }
                     }));
                     var resp = await myschema.find({"id_solicitud" : data, "activo": true});
-                    if(resp[0].id_solicitud == data && resp[0].activo ){
+                    if(resp[0].id_solicitud == data && resp[5].activo ){
                         return "La informacion se encontro en: "+ pais[i]+"\n la informacion es:"+resp;
                     }
                     connection.close();
