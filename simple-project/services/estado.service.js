@@ -46,26 +46,22 @@ module.exports = {
 			rest: "/estado",
 			/** @param {Context} ctx  */
 			async handler(ctx) {
-				var lol=256
-				;
-				//mongoose.connect("192.168.18.73:27034,192.168.18.73:27035/puertos?replicaSet=tres");
-				var bds=["192.168.18.73:27030,192.168.18.73:27032/puertos?replicaSet=uno","192.168.18.73:27031,192.168.18.73:27033/puertos?replicaSet=dos","192.168.18.73:27034,192.168.18.73:27035/puertos?replicaSet=tres"];
+				var bds=["25.6.50.193:27020,25.5.181.178:27022/movimientos?replicaSet=rep_mov_costarica","25.5.181.178:27020,25.77.2.238:27022/movimientos?replicaSet=rep_mov_panama","25.77.2.238:27020,25.77.226.95:27022/movimientos?replicaSet=rep_mov_colombia","25.77.226.95:27020,25.6.50.193:27022/movimientos?replicaSet=rep_mov_mexico"]
+				//var bds=["192.168.18.73:27030,192.168.18.73:27032/puertos?replicaSet=uno","192.168.18.73:27031,192.168.18.73:27033/puertos?replicaSet=dos","192.168.18.73:27034,192.168.18.73:27035/puertos?replicaSet=tres"];
 				var paises=["Costa Rica", "Panamá","Colombia","Mexico"];
-				for(let i=0;i<3;i++){
+				for(let i=0;i<4;i++){
 					var est=mongoose.createConnection("mongodb://"+bds[i]);
-					const Modelito3 = est.models.contenedores || est.model("contenedores", mongoose.Schema({
+					const Modelito3 = est.models.movimientos || est.model("movimientos", mongoose.Schema({
+						id_solicitud: { type: Number },
 						id_contenedor: { type: Number },
-						fecha_limite: { type: String },
-						pais_A: { type: String },
-						pais_B: { type: String },
-						espacios: { type: Array },
-						precio_kilogramo: { type: Number },
-						peso_maximo: { type: Number }
+						pais_llegada: { type: String },
+						id_cliente: { type: Number },
+						peso: { type: Number },
+						activo: { type: Boolean}
 					}));
-					var resp = await Modelito3.find({"id_contenedor":lol});
-					if(resp[0].precio_kilogramo==14.883){
+					var resp = await Modelito3.find({"id_solicitud":ctx.params.numOrden,"activo":true});
+					if(resp!=null)
 						return "Su paquete se encuentra en "+paises[i];
-					}
 					est.close();
 				};
 				return "Este contenedor no existe";				  

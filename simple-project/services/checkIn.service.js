@@ -48,7 +48,8 @@ module.exports = {
 			},
 			/** @param {Context} ctx  */
 			async handler(ctx) {
-				var dbs=["192.168.18.73:27030,192.168.18.73:27032/puertos?replicaSet=uno","192.168.18.73:27031,192.168.18.73:27033/puertos?replicaSet=dos","192.168.18.73:27034,192.168.18.73:27035/puertos?replicaSet=tres"];
+				var dbs=["25.6.50.193:27020,25.5.181.178:27022/movimientos?replicaSet=rep_mov_costarica","25.5.181.178:27020,25.77.2.238:27022/movimientos?replicaSet=rep_mov_panama","25.77.2.238:27020,25.77.226.95:27022/movimientos?replicaSet=rep_mov_colombia","25.77.226.95:27020,25.6.50.193:27022/movimientos?replicaSet=rep_mov_mexico"]
+				//var dbs=["192.168.18.73:27030,192.168.18.73:27032/puertos?replicaSet=uno","192.168.18.73:27031,192.168.18.73:27033/puertos?replicaSet=dos","192.168.18.73:27034,192.168.18.73:27035/puertos?replicaSet=tres"];
 				var dbEsp;
 				switch(ctx.params.pais){
 					case 'Costa Rica':
@@ -59,6 +60,9 @@ module.exports = {
 						break;
 					case 'Colombia':
 						dbEsp=2;
+						break;
+					case 'Mexico':
+						dbEsp=3;
 						break;
 				}
 				return dbs[dbEsp];
@@ -86,33 +90,31 @@ module.exports = {
 			/** @param {Context} ctx  */
 			async handler(ctx) {
 
-				var urlNecesario=await ctx.call("greeter.urlHelper",{pais:ctx.params.puertoAnterior});
+				var urlNecesario=await ctx.call("check.urlHelper",{pais:ctx.params.puertoAnterior});
 				var conexion=mongoose.createConnection("mongodb://"+urlNecesario);				
-				const Modelito5 = conexion.models.contenedores || conexion.model("contenedores", mongoose.Schema({
+				const Modelito5 = conexion.models.movimientos || conexion.model("movimientos", mongoose.Schema({
+					id_solicitud: { type: Number },
 					id_contenedor: { type: Number },
-					fecha_limite: { type: String },
-					pais_A: { type: String },
-					pais_B: { type: String },
-					espacios: { type: Array },
-					precio_kilogramo: { type: Number },
-					peso_maximo: { type: Number }
+					pais_llegada: { type: String },
+					id_cliente: { type: Number },
+					peso: { type: Number },
+					activo: { type: Boolean}
 				}));
 
-				var obj= await Modelito5.find({"id_contenedor":20});
-				var resp = await Modelito5.updateOne({"id_contenedor":25},{$set:{"fecha_limite":"2555/8/2022"}});
+				var obj= await Modelito5.find({"id_contenedor":ctx.params.idContainer});
+				var resp = await Modelito5.updateOne({"activo":false});
 				var copia=obj[0]
 				
 
-				var urlNecesario2=await ctx.call("greeter.urlHelper",{pais:ctx.params.nuevoPuerto});
+				var urlNecesario2=await ctx.call("check.urlHelper",{pais:ctx.params.nuevoPuerto});
 				var conexion=mongoose.createConnection("mongodb://"+urlNecesario2);
-				const Modelito6 = conexion.models.contenedores || conexion.model("contenedores", mongoose.Schema({
+				const Modelito6 = conexion.models.movimientos || conexion.model("movimientos", mongoose.Schema({
+					id_solicitud: { type: Number },
 					id_contenedor: { type: Number },
-					fecha_limite: { type: String },
-					pais_A: { type: String },
-					pais_B: { type: String },
-					espacios: { type: Array },
-					precio_kilogramo: { type: Number },
-					peso_maximo: { type: Number }
+					pais_llegada: { type: String },
+					id_cliente: { type: Number },
+					peso: { type: Number },
+					activo: { type: Boolean}
 				},{versionKey: false}));
 				await Modelito6.insertMany(obj);
 				return copia;

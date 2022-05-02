@@ -31,6 +31,31 @@ module.exports = {
 	 * Actions
 	 */
 	actions: {
+
+		obt: {
+			rest: {
+				method: "GET",
+				path: "/obt"
+			},
+			/** @param {Context} ctx  */
+			async handler(ctx) {
+				var conexion= mongoose.createConnection("mongodb://192.168.18.73:27030,192.168.18.73:27032/puertos?replicaSet=uno");
+				const Modelito5 = conexion.models.contenedores || conexion.model("contenedores", mongoose.Schema({
+					id_contenedor: { type: Number },
+					fecha_limite: { type: String },
+					pais_A: { type: String },
+					pais_B: { type: String },
+					espacios: { type: Array },
+					precio_kilogramo: { type: Number },
+					peso_maximo: { type: Number }
+				}));
+				var resp=Modelito5.find();
+				return resp;
+			}
+		},
+
+
+
         /**
 		 * permite revisar si un paquete cabe en un contenedor
 		 *
@@ -91,13 +116,14 @@ module.exports = {
 			},
 			/** @param {Context} ctx  */
 			async handler(ctx) {
-				const disp = await ctx.call("greeter.test1")
-				const resp=[]
+				var disp = await ctx.call("consultas.obt")
+				//var disp = await ctx.cacher.get(ctx.params.salida+ctx.params.destino);
+				var resp=[]
 				for (let i = 0; i< disp.length;i++){
 					if(ctx.params.salida==disp[i].pais_A && ctx.params.destino==disp[i].pais_B){
 						const cabe = await ctx.call("consultas.checkEspacios",{medida1:ctx.params.medida1,medida2:ctx.params.medida2,medida3:ctx.params.medida3,medida4:disp[i].espacios[0],medida5:disp[i].espacios[1],medida6:disp[i].espacios[2]})
 						const medidasUsuario =[ parseInt(ctx.params.medida1), parseInt(ctx.params.medida2), parseInt(ctx.params.medida3)];
-						if(parseInt(ctx.params.peso)<=disp[i].peso_maximo && cabe){
+						if(parseFloat(ctx.params.peso)<=disp[i].peso_maximo && cabe){
 							resp.push(disp[i]);			
 						}
 					}
