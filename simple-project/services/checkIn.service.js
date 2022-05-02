@@ -68,6 +68,36 @@ module.exports = {
 				return dbs[dbEsp];
 			}
 		},
+		urlHelper2: {
+			rest: {
+				method: "GET",
+				path: "/urlHelper"
+			},
+			params: {
+				pais: "string"
+			},
+			/** @param {Context} ctx  */
+			async handler(ctx) {
+				var dbs=["25.6.50.193:27019,25.5.181.178:27021/puertos?replicaSet=rep_pais_costarica","25.5.181.178:27019,25.77.2.238:27021/puertos?replicaSet=rep_pais_panama","25.77.2.238:27019,25.77.226.95:27021/puertos?replicaSet=rep_pais_colombia","25.77.226.95:27019,25.6.50.193:27021/puertos?replicaSet=rep_pais_mexico"]
+				//var dbs=["192.168.18.73:27030,192.168.18.73:27032/puertos?replicaSet=uno","192.168.18.73:27031,192.168.18.73:27033/puertos?replicaSet=dos","192.168.18.73:27034,192.168.18.73:27035/puertos?replicaSet=tres"];
+				var dbEsp;
+				switch(ctx.params.pais){
+					case 'Costa Rica':
+						dbEsp=0;
+						break;
+					case 'Panama':
+						dbEsp=1;
+						break;
+					case 'Colombia':
+						dbEsp=2;
+						break;
+					case 'Mexico':
+						dbEsp=3;
+						break;
+				}
+				return dbs[dbEsp];
+			}
+		},
 		
 		/**
 		 * permite revisar si un paquete cabe en un contenedor

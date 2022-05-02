@@ -37,9 +37,15 @@ module.exports = {
 				method: "GET",
 				path: "/obt"
 			},
+			params: {
+				pais: "string",
+				llegada: "string",
+			},
 			/** @param {Context} ctx  */
 			async handler(ctx) {
-				var conexion= mongoose.createConnection("mongodb://192.168.18.73:27030,192.168.18.73:27032/puertos?replicaSet=uno");
+				console.log("obt");
+				var url = ctx.call("check.urlHelper2", {pais : ctx.params.pais});
+				var conexion= mongoose.createConnection("mongodb://"+url);
 				const Modelito5 = conexion.models.contenedores || conexion.model("contenedores", mongoose.Schema({
 					id_contenedor: { type: Number },
 					fecha_limite: { type: String },
@@ -49,7 +55,9 @@ module.exports = {
 					precio_kilogramo: { type: Number },
 					peso_maximo: { type: Number }
 				}));
-				var resp=Modelito5.find();
+				console.log("obt2");
+				var resp=Modelito5.find({"pais_A":ctx.params.pais,"pais_B":ctx.params.llegada});
+				console.log("obt3");
 				return resp;
 			}
 		},
@@ -116,8 +124,16 @@ module.exports = {
 			},
 			/** @param {Context} ctx  */
 			async handler(ctx) {
-				var disp = await ctx.call("consultas.obt")
-				//var disp = await ctx.cacher.get(ctx.params.salida+ctx.params.destino);
+				
+				const key = ctx.params.salida + ctx.params.destino;
+				var disp = JSON.parse(await ctx.broker.cacher.get(key));
+				if(disp == null){
+					//llamar a la base de datos
+					console.log("ENTRA A LA BASE DE DATOS");
+					disp = await ctx.call("consultas.obt",{pais:ctx.params.salida,llegada:ctx.params.destino});
+					console.log("ENTRA A LA BASE DE DATOS2");
+					await ctx.broker.cacher.set(key, JSON.stringify(resp));
+				}
 				var resp=[]
 				for (let i = 0; i< disp.length;i++){
 					if(ctx.params.salida==disp[i].pais_A && ctx.params.destino==disp[i].pais_B){

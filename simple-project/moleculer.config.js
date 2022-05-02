@@ -62,7 +62,7 @@ module.exports = {
 
 	// Define a cacher.
 	// More info: https://moleculer.services/docs/0.14/caching.html
-	/*cacher: {
+	cacher: {
         type: "Redis",
         options: {
             ttl: 30, 
@@ -79,8 +79,8 @@ module.exports = {
             }   
         }
     },
-	*/
-	cacher:null,
+	
+	//cacher:null,
 
 	// Define a serializer.
 	// Available values: "JSON", "Avro", "ProtoBuf", "MsgPack", "Notepack", "Thrift".
